@@ -30,9 +30,28 @@ class _HomePageState extends State<HomePage> {
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  new IconButton(
-                    onPressed: () {},
-                    icon: new Icon(Icons.menu),
+                  new Container(
+                    margin: EdgeInsets.only(left : ScreenUtil().setWidth(7.0), top :ScreenUtil().setWidth(7.0)),
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: new BorderRadius.circular(10.0),
+                      boxShadow: [
+                        new BoxShadow(
+                          color: Colors.blueGrey.shade100,
+                          offset: new Offset(-3.0, -3.0),
+                          blurRadius: 2.0
+                        ),
+                        new BoxShadow(
+                          color: Colors.blueGrey.shade100,
+                          offset: new Offset(4.0, 4.0),
+                          blurRadius: 5.0
+                        )
+                      ]
+                    ),
+                    child: new IconButton(
+                      onPressed: () {},
+                      icon: new Icon(Icons.menu),
+                    ),
                   ),
                   new ClipRRect(
                     borderRadius: BorderRadius.circular(50.0),
@@ -118,45 +137,32 @@ class _HomePageState extends State<HomePage> {
                           _currentCategory = index;
                         });
                       },
-                      child: Stack(
-                        children: <Widget>[
-                          new Container(
-                            decoration: new BoxDecoration(
+                      child: new Container(
+                        margin: EdgeInsets.all(6.0),
+                        width: ScreenUtil().setWidth(250.0),
+                        height: ScreenUtil().setHeight(75.0),
+                        decoration: new BoxDecoration(
+                            border: Border.all(
+                                width: 2,
                                 color: _currentCategory == index
-                                    ? Colors.deepOrange
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(10.0)),
-                            margin: EdgeInsets.all(6.0),
-                            width: ScreenUtil().setWidth(250.0) + 5.0,
-                          ),
-                          new Positioned(
-                            top: 1.0,
-                            left: 2.1,
-                            child: new Container(
-                              margin: EdgeInsets.all(6.0),
-                              width: ScreenUtil().setWidth(250.0),
-                              height: ScreenUtil().setHeight(75.0),
-                              decoration: new BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: new Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  new Image(
-                                      width: ScreenUtil().setWidth(60.0),
-                                      height: ScreenUtil().setHeight(50.0),
-                                      fit: BoxFit.contain,
-                                      image: AssetImage(cat[index].imageURL)),
-                                  new Text(cat[index].categoryName,
-                                      style: new TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: ScreenUtil().setSp(22.0)))
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.white),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            new Image(
+                                width: ScreenUtil().setWidth(60.0),
+                                height: ScreenUtil().setHeight(50.0),
+                                fit: BoxFit.contain,
+                                image: AssetImage(cat[index].imageURL)),
+                            new Text(cat[index].categoryName,
+                                style: new TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: ScreenUtil().setSp(22.0)))
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -307,11 +313,23 @@ class _HomePageState extends State<HomePage> {
                           height: ScreenUtil().setHeight(420),
                           width: ScreenUtil().setWidth(320),
                           decoration: new BoxDecoration(
-                            color: Colors.teal,
+                            color: Color.fromRGBO(255, 255, 255, 0.6),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: new Column(
+                          child: new Stack(
+                            alignment: Alignment.topCenter,
                             children: <Widget>[
+                              new Positioned(
+                                top: ScreenUtil().setHeight(50.0),
+                                child: new Container(
+                                  height: ScreenUtil().setHeight(200.0),
+                                  width: ScreenUtil().setWidth(160.0),
+                                  decoration: new BoxDecoration(
+                                      color: Colors.blueGrey.shade50,
+                                      borderRadius:
+                                          new BorderRadius.circular(100.0)),
+                                ),
+                              ),
                               new Container(
                                 height: ScreenUtil().setHeight(325),
                                 child: new Image(
@@ -319,7 +337,77 @@ class _HomePageState extends State<HomePage> {
                                     fit: BoxFit.contain,
                                     image:
                                         new AssetImage(expPro[index].imageURL)),
-                              )
+                              ),
+                              new Positioned(
+                                bottom: ScreenUtil().setHeight(2.0),
+                                child: new Container(
+                                  padding: EdgeInsets.only(
+                                      left: ScreenUtil().setWidth(10.0)),
+                                  height: ScreenUtil().setHeight(110.0),
+                                  width: ScreenUtil().setWidth(295.0),
+                                  decoration: new BoxDecoration(
+                                      color: Theme.of(context).backgroundColor,
+                                      borderRadius:
+                                          new BorderRadius.circular(10.0)),
+                                  child: new Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          new Text(expPro[index].title,
+                                              style: new TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(30.0),
+                                                  fontWeight: FontWeight.w500)),
+                                          expPro[index].verfied
+                                              ? new Icon(
+                                                  Icons.verified_user,
+                                                  color: Colors.amber.shade600,
+                                                  size: 25.0,
+                                                )
+                                              : SizedBox(
+                                                  width: 1.0,
+                                                ),
+                                        ],
+                                      ),
+                                      new Text(
+                                        expPro[index].avail,
+                                        style: new TextStyle(
+                                          fontSize: ScreenUtil().setSp(20.0),
+                                          fontWeight: FontWeight.w400,
+                                          color: expPro[index].avail ==
+                                                  "Availiable"
+                                              ? Colors.green
+                                              : Colors.red,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          new Text(
+                                            'Starting just at  \$',
+                                            style: new TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(20.0),
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          new Text(
+                                            '${expPro[index].price}',
+                                            style: new TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(35.0),
+                                                fontWeight: FontWeight.w800,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         );

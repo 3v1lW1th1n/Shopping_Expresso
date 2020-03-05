@@ -14,7 +14,7 @@ List<Explore> expPro = [
   new Explore(
       title: "Style Trends",imageURL: 'assets/images/explore_virat.jpg', avail: "Availiable", price: 25, verfied: true),
   new Explore(
-      title: "Electronics",imageURL: 'assets/images/explore_headphones.png', avail: "Availiable", price: 55, verfied: false),
+      title: "Electronics",imageURL: 'assets/images/explore_headphones.png', avail: "Few left", price: 55, verfied: false),
   new Explore(
       title: "Laptops",imageURL: 'assets/images/explore_laptops.png', avail: "Availiable", price: 120, verfied: true),
 ];
