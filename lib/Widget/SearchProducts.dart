@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchProducts extends StatefulWidget {
+  FocusNode myFocusNode ;
+  SearchProducts({@required this.myFocusNode});
   @override
   _SearchProductsState createState() => _SearchProductsState();
 }
@@ -20,6 +22,7 @@ class _SearchProductsState extends State<SearchProducts> {
                 borderRadius: new BorderRadius.circular(10)),
             width: MediaQuery.of(context).size.width * 0.8,
             child: new TextField(
+              focusNode: widget.myFocusNode,
               decoration: new InputDecoration(
                   contentPadding: EdgeInsets.only(left: 20.0),
                   hintText: "Search Products",

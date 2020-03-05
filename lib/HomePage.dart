@@ -1,10 +1,4 @@
-import 'package:bmf_shopping/Widget/CategoryCarousel.dart';
-import 'package:bmf_shopping/Widget/CustomizedAppBar.dart';
-import 'package:bmf_shopping/Widget/ExploreGrid.dart';
-import 'package:bmf_shopping/Widget/ExploreTray.dart';
-import 'package:bmf_shopping/Widget/OurProductsTray.dart';
-import 'package:bmf_shopping/Widget/SearchProducts.dart';
-import 'package:bmf_shopping/Widget/SneakersCarousel.dart';
+import 'package:bmf_shopping/Screens/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,37 +9,62 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentCategory = 0;
+  int _currentIndex = 0;
+  FocusNode myFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    myFocusNode = FocusNode();
+  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 750, height: 1335, allowFontScaling: true);
-
+    final List<Widget> Screens = [
+      new Home(
+        myFocusNode: myFocusNode,
+      ),
+      
+      
+    ];
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: new SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
-          child: new ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              CustomizedAppBar(),
-              new SizedBox(height: ScreenUtil().setHeight(10.0)),
-              OurProductsTray(),
-              new SizedBox(height: ScreenUtil().setHeight(30.0)),
-              SearchProducts(),
-              new SizedBox(height: ScreenUtil().setHeight(40.0)),
-              CategoryCarousel(),
-              new SizedBox(height: ScreenUtil().setHeight(30.0)),
-              SneakersCarousel(),
-              new SizedBox(height: ScreenUtil().setHeight(30.0)),
-              ExploreTray(),
-              new SizedBox(height: ScreenUtil().setHeight(30.0)),
-              ExploreGrid()
-            ],
-          ),
-        ),
+      body: Screens[_currentIndex],
+      bottomNavigationBar: new BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        items: <BottomNavigationBarItem>[
+          new BottomNavigationBarItem(
+              icon: new Icon(FontAwesomeIcons.home),
+              title: new SizedBox.shrink()),
+          new BottomNavigationBarItem(
+              icon: new Icon(FontAwesomeIcons.search),
+              title: new SizedBox.shrink()),
+          new BottomNavigationBarItem(
+              icon: new Icon(FontAwesomeIcons.cartArrowDown),
+              title: new SizedBox.shrink()),
+          new BottomNavigationBarItem(
+              icon: new Icon(FontAwesomeIcons.heart),
+              title: new SizedBox.shrink())
+        ],
+        onTap: (index) {
+          setState(() {
+            if (index == 1) {
+              FocusScope.of(context).requestFocus(myFocusNode);
+              _currentIndex =0 ;
+            }else
+              _currentIndex = index;
+          });
+        },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myFocusNode.dispose();
   }
 }
