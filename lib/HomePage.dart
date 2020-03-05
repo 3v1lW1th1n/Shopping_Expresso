@@ -1,6 +1,7 @@
 import 'package:bmf_shopping/Models/Sneakers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'Models/Categories.dart';
 
@@ -112,14 +113,14 @@ class _HomePageState extends State<HomePage> {
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(10.0)),
                           margin: EdgeInsets.all(6.0),
-                          width: ScreenUtil().setWidth(200.0) + 5.0,
+                          width: ScreenUtil().setWidth(250.0) + 5.0,
                         ),
                         new Positioned(
                           top: 1.0,
                           left: 2.1,
                           child: new Container(
                             margin: EdgeInsets.all(6.0),
-                            width: ScreenUtil().setWidth(200.0),
+                            width: ScreenUtil().setWidth(250.0),
                             height: ScreenUtil().setHeight(75.0),
                             decoration: new BoxDecoration(
                                 color: Colors.white,
@@ -187,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                                       fontSize: ScreenUtil().setSp(25.0),
                                       color: sneakers[index].avail == true
                                           ? Colors.green
-                                          : Colors.redAccent,
+                                          : Colors.red.shade700,
                                       fontWeight: FontWeight.w800),
                                 ),
                                 new SizedBox(
@@ -216,21 +217,44 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        new ClipRRect(
-                          child: new Image(
-                            width: ScreenUtil().setWidth(300),
-                            height: ScreenUtil().setHeight(200),
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              sneakers[index].imageURL
-                            ) 
+                        new Positioned(
+                          top: ScreenUtil().setHeight(25.0),
+                          child: new ClipRRect(
+                            child: new Image(
+                                width: ScreenUtil().setWidth(240),
+                                height: ScreenUtil().setHeight(240),
+                                fit: BoxFit.cover,
+                                image: AssetImage(sneakers[index].imageURL)),
                           ),
-                        )
+                        ),
+                        new Positioned(
+                            left: ScreenUtil().setWidth(15.0),
+                            child: new IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    if (sneakers[index].liked == false)
+                                      sneakers[index].liked = true;
+                                    else
+                                      sneakers[index].liked = false;
+                                  });
+                                },
+                                icon: sneakers[index].liked == false
+                                    ? new Icon(
+                                        FontAwesomeIcons.heart,
+                                      )
+                                    : new Icon(
+                                        FontAwesomeIcons.solidHeart,
+                                        color: Colors.red.shade700,
+                                      )))
                       ],
                     ),
                   );
                 },
               ),
+            ),
+            new Container(
+              color:Colors.red,
+              height: 120.0,
             )
           ],
         ),
