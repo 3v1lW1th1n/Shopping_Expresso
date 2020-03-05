@@ -1,3 +1,4 @@
+import 'package:bmf_shopping/Models/Explore.dart';
 import 'package:bmf_shopping/Models/Sneakers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
         child: Padding(
           padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
           child: new ListView(
+            shrinkWrap: true,
             children: <Widget>[
               new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -289,23 +291,41 @@ class _HomePageState extends State<HomePage> {
               ),
               new SizedBox(height: ScreenUtil().setHeight(30.0)),
               new Padding(
-                padding: EdgeInsets.only(left: ScreenUtil().setWidth(15.0)),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Container(
-                      height: ScreenUtil().setHeight(400),
-                      width: ScreenUtil().setSp(325),
-                      color: Colors.teal,
+                  padding: EdgeInsets.only(left: ScreenUtil().setWidth(15.0)),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: GridView.count(
+                      shrinkWrap: false,
+                      primary: true,
+                      childAspectRatio: (ScreenUtil().setWidth(300) /
+                          ScreenUtil().setHeight(400)),
+                      crossAxisCount: 2,
+                      children: List.generate(4, (index) {
+                        return Container(
+                          padding: EdgeInsets.all(8.0),
+                          margin: EdgeInsets.all(8.0),
+                          height: ScreenUtil().setHeight(420),
+                          width: ScreenUtil().setWidth(320),
+                          decoration: new BoxDecoration(
+                            color: Colors.teal,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: new Column(
+                            children: <Widget>[
+                              new Container(
+                                height: ScreenUtil().setHeight(325),
+                                child: new Image(
+                                    width: ScreenUtil().setWidth(300),
+                                    fit: BoxFit.contain,
+                                    image:
+                                        new AssetImage(expPro[index].imageURL)),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                     ),
-                    new Container(
-                      height: ScreenUtil().setHeight(400),
-                      width: ScreenUtil().setSp(325),
-                      color: Colors.teal,
-                    )
-                  ],
-                ),
-              ),
+                  )),
             ],
           ),
         ),

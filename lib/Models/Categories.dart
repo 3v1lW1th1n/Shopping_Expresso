@@ -9,7 +9,7 @@ class Categories {
 
 List<Categories> cat = [
   new Categories(categoryName: "Sneakers"
-  , imageURL: "assets/images/shooe_tilt_1.png" ),
+  , imageURL: "assets/images/show_1.png" ),
   new Categories(categoryName: "Watches"
   , imageURL: "assets/images/watch.png"),
   new Categories(categoryName: "Jackets", imageURL: 'assets/images/jacket.png'),
