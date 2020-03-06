@@ -51,9 +51,9 @@ class _HomePageState extends State<HomePage> {
         ],
         onTap: (index) {
           setState(() {
-            if (index == 1) {
+            if (index <= 1) {
               FocusScope.of(context).requestFocus(myFocusNode);
-              _currentIndex =0 ;
+              _currentIndex = 0 ;
             }else
               _currentIndex = index;
           });

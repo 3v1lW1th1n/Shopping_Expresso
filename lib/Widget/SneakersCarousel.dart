@@ -1,4 +1,5 @@
 import 'package:bmf_shopping/Models/Sneakers.dart';
+import 'package:bmf_shopping/Screens/ProductDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -80,14 +81,26 @@ class _SneakersCarouselState extends State<SneakersCarousel> {
                     ),
                   ),
                 ),
-                new Positioned(
-                  top: ScreenUtil().setHeight(25.0),
-                  child: new ClipRRect(
-                    child: new Image(
-                        width: ScreenUtil().setWidth(240),
-                        height: ScreenUtil().setHeight(240),
-                        fit: BoxFit.cover,
-                        image: AssetImage(sneakers[index].imageURL)),
+                new GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProductDetails(product: sneakers[index])));
+                  },
+                  child: new Hero(
+                    tag: sneakers[index].name,
+                    child: new Positioned(
+                      top: ScreenUtil().setHeight(25.0),
+                      child: new ClipRRect(
+                        child: new Image(
+                            width: ScreenUtil().setWidth(240),
+                            height: ScreenUtil().setHeight(240),
+                            fit: BoxFit.cover,
+                            image: AssetImage(sneakers[index].imageURL)),
+                      ),
+                    ),
                   ),
                 ),
                 new Positioned(
