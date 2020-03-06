@@ -14,17 +14,39 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   int _selectedView = 0;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> sizes = ["US 6", "US 7", "US 8", "US 9", "US 10"];
+  List col = [
+    Colors.pink.shade300,
+    Colors.purple.shade200,
+    Colors.black26,
+    Colors.amberAccent,
+    Colors.cyan
+  ];
+  int _colSelected = 0;
+  int _selectedSize = 0;
+
+  String _buildStars(int n) {
+    String stars = '';
+    for (int i = 0; i < n; i++) stars = stars + '⭐';
+    return stars;
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Colors.white,
       body: new SafeArea(
         child: new Stack(
           children: <Widget>[
+            new Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+            ),
             new Hero(
               tag: widget.product.name,
               child: new Container(
+                height: MediaQuery.of(context).size.width,
                 decoration: new BoxDecoration(
                   borderRadius: new BorderRadius.only(
                       bottomLeft: Radius.circular(50.0),
@@ -55,6 +77,47 @@ class _ProductDetailsState extends State<ProductDetails> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.width,
                           image: new AssetImage(widget.product.imageURL)),
+                    ),
+                    new Positioned(
+                      bottom: ScreenUtil().setHeight(30.0),
+                      left: MediaQuery.of(context).size.width * 0.05,
+                      child: new Container(
+                        height: ScreenUtil().setHeight(90.0),
+                        width: MediaQuery.of(context).size.width,
+                        child: new ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: views.length,
+                          itemBuilder: (context, index) {
+                            return new GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedView = index;
+                                });
+                              },
+                              child: Container(
+                                margin:
+                                    EdgeInsets.all(ScreenUtil().setWidth(10.0)),
+                                width: ScreenUtil().setWidth(150.0),
+                                decoration: new BoxDecoration(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  border: new Border.all(
+                                      color: _selectedView == index
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.blueGrey,
+                                      width: 3),
+                                ),
+                                child: new ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: new Image(
+                                      fit: BoxFit.fitWidth,
+                                      image: new AssetImage(
+                                          views[index].imageURL)),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -115,7 +178,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       icon: widget.product.liked == true
                           ? new Icon(
                               FontAwesomeIcons.solidHeart,
-                              color: Colors.red,
+                              color: Colors.pink,
                             )
                           : new Icon(FontAwesomeIcons.heart),
                     ),
@@ -123,42 +186,170 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ],
               ),
             ),
+            //Do the Sit there .
             new Positioned(
-              bottom: ScreenUtil().setHeight(30.0),
-              left: MediaQuery.of(context).size.width * 0.05,
+              bottom: 0.0,
               child: new Container(
-                height: ScreenUtil().setHeight(90.0),
+                height: MediaQuery.of(context).size.height * 0.75,
                 width: MediaQuery.of(context).size.width,
-                child: new ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: views.length,
-                  itemBuilder: (context, index) {
-                    return new GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedView = index;
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
-                        width: ScreenUtil().setWidth(150.0),
-                        decoration: new BoxDecoration(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          border: new Border.all(
-                              color: _selectedView == index
-                                  ? Theme.of(context).primaryColor
-                                  : Colors.blueGrey,
-                              width: 3),
-                        ),
-                        child: new ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: new Image(
-                              fit: BoxFit.fitWidth,
-                              image: new AssetImage(views[index].imageURL)),
-                        ),
+                decoration: new BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: new BorderRadius.only(
+                      topLeft: Radius.circular(40.0),
+                      topRight: Radius.circular(40.0)),
+                ),
+                child: new Column(
+                  children: <Widget>[
+                    new Icon(
+                      Icons.keyboard_arrow_up,
+                      size: 40.0,
+                    ),
+                    new Padding(
+                      padding: EdgeInsets.all(ScreenUtil().setWidth(15.0)),
+                      child: new Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                widget.product.name,
+                                style: new TextStyle(
+                                    fontSize: ScreenUtil().setSp(40.0),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  new Text(
+                                    '\$${widget.product.price}',
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: ScreenUtil().setSp(60.0),
+                                        color: Colors.black87),
+                                  ),
+                                  new SizedBox(
+                                      height: ScreenUtil().setHeight(10.0)),
+                                  new Text(
+                                    _buildStars(5),
+                                    style: new TextStyle(
+                                        fontSize: ScreenUtil().setSp(25.0)),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                          new Align(
+                            alignment: Alignment.topLeft,
+                            child: new Text(
+                              "Availiable Sizes",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: ScreenUtil().setSp(32.0)),
+                            ),
+                          ),
+                          new SizedBox(
+                            height: ScreenUtil().setHeight(15.0),
+                          ),
+                          new Container(
+                            height: ScreenUtil().setHeight(75.0),
+                            child: new ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: sizes.length,
+                              itemBuilder: (context, index) {
+                                return new GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedSize = index;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: ScreenUtil().setWidth(150.0),
+                                    height: ScreenUtil().setHeight(30.0),
+                                    margin: EdgeInsets.only(
+                                        left: ScreenUtil().setWidth(10.0)),
+                                    decoration: new BoxDecoration(
+                                        color: _selectedSize == index
+                                            ? Theme.of(context).primaryColor
+                                            : Colors.white,
+                                        borderRadius:
+                                            new BorderRadius.circular(10.0),
+                                        border: new Border.all(
+                                          width: 2.0,
+                                          color: _selectedSize == index
+                                              ? Theme.of(context).primaryColor
+                                              : Colors.grey,
+                                        )),
+                                    child: new Center(
+                                      child: new Text(
+                                        sizes[index],
+                                        style: new TextStyle(
+                                          fontSize: ScreenUtil().setSp(25.0),
+                                          color: _selectedSize == index
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          new SizedBox(height: ScreenUtil().setHeight(17.0)),
+                          new Align(
+                            alignment: Alignment.topLeft,
+                            child: new Text(
+                              "Color",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: ScreenUtil().setSp(28.0)),
+                            ),
+                          ),
+                          new SizedBox(height: ScreenUtil().setHeight(10.0)),
+                          new Container(
+                            height: ScreenUtil().setHeight(30.0),
+                            child: new ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: col.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  height: ScreenUtil().setHeight(30.0),
+                                  width: ScreenUtil().setWidth(30.0),
+                                  margin: EdgeInsets.only(
+                                      left: ScreenUtil().setWidth(10.0)),
+                                  child: ChoiceChip(
+                                    selected: _colSelected == index,
+                                    label: new SizedBox.shrink(),
+                                    backgroundColor: col[index],
+                                    onSelected: (bool _value) {
+                                      setState(() {
+                                        _colSelected = _value ? index : null;
+                                      });
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          new SizedBox(height: ScreenUtil().setHeight(17.0)),
+                          new Align(
+                            alignment: Alignment.topLeft,
+                            child: new Text(
+                              "Details",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: ScreenUtil().setSp(30.0)),
+                            ),
+                          ),
+                          new Text(
+                            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.",
+
+                          )
+                        ],
                       ),
-                    );
-                  },
+                    )
+                  ],
                 ),
               ),
             )
