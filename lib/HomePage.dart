@@ -1,3 +1,5 @@
+import 'package:bmf_shopping/Models/CartProduct.dart';
+import 'package:bmf_shopping/Screens/Cart.dart';
 import 'package:bmf_shopping/Screens/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,14 +27,13 @@ class _HomePageState extends State<HomePage> {
       new Home(
         myFocusNode: myFocusNode,
       ),
-      
-      
+      new Cart()
     ];
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Screens[_currentIndex],
       bottomNavigationBar: new BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: _currentIndex >= 1 ? _currentIndex + 1 : _currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
         items: <BottomNavigationBarItem>[
@@ -51,11 +52,12 @@ class _HomePageState extends State<HomePage> {
         ],
         onTap: (index) {
           setState(() {
+            print(index);
             if (index <= 1) {
               FocusScope.of(context).requestFocus(myFocusNode);
               _currentIndex = 0 ;
             }else
-              _currentIndex = index;
+              _currentIndex = index - 1;
           });
         },
       ),
