@@ -31,7 +31,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return stars;
   }
 
-  bool _barOpened = false ;
+  bool _barOpened = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +39,18 @@ class _ProductDetailsState extends State<ProductDetails> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: new GestureDetector(
-        onVerticalDragUpdate: (DragUpdateDetails details){
-          if(details.delta.dy < -10){
+        onVerticalDragUpdate: (DragUpdateDetails details) {
+          if (details.delta.dy < -10) {
             setState(() {
-              _barOpened = true ;
+              _barOpened = true;
             });
-          }else if (details.delta.dy > 10){
+          } else if (details.delta.dy > 10) {
             setState(() {
-              _barOpened = false ;
+              _barOpened = false;
             });
           }
         },
-              child: new SafeArea(
+        child: new SafeArea(
           child: new Stack(
             children: <Widget>[
               new Container(
@@ -109,11 +109,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   });
                                 },
                                 child: Container(
-                                  margin:
-                                      EdgeInsets.all(ScreenUtil().setWidth(10.0)),
+                                  margin: EdgeInsets.all(
+                                      ScreenUtil().setWidth(10.0)),
                                   width: ScreenUtil().setWidth(150.0),
                                   decoration: new BoxDecoration(
-                                    borderRadius: new BorderRadius.circular(10.0),
+                                    borderRadius:
+                                        new BorderRadius.circular(10.0),
                                     border: new Border.all(
                                         color: _selectedView == index
                                             ? Theme.of(context).primaryColor
@@ -202,12 +203,15 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               //Do the Sit there .
               new AnimatedPositioned(
-                duration: new Duration(milliseconds : 700),
+                duration: new Duration(milliseconds: 500),
                 curve: Curves.easeInCubic,
-                bottom: _barOpened ? 0.0 : - MediaQuery.of(context).size.height * 0.28,
+                bottom: _barOpened
+                    ? 0.0
+                    : -MediaQuery.of(context).size.height * 0.28,
                 child: new Container(
                   height: MediaQuery.of(context).size.height * 0.75,
                   width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(ScreenUtil().setWidth(3.0)),
                   decoration: new BoxDecoration(
                     color: Theme.of(context).backgroundColor,
                     borderRadius: new BorderRadius.only(
@@ -217,7 +221,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: new Column(
                     children: <Widget>[
                       new Icon(
-                        Icons.keyboard_arrow_up,
+                        _barOpened
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_up,
                         size: 40.0,
                       ),
                       new Padding(
@@ -358,15 +364,32 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     fontSize: ScreenUtil().setSp(30.0)),
                               ),
                             ),
+                            new SizedBox(height: ScreenUtil().setHeight(20.0)),
                             new Text(
                               "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.",
-
                             )
                           ],
                         ),
                       )
                     ],
                   ),
+                ),
+              ),
+              new Positioned(
+                bottom: 0.0,
+                child: new Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: ScreenUtil().setHeight(100.0),
+                  decoration: new BoxDecoration(
+                      gradient: new LinearGradient(
+                          colors: [
+                            Color.fromRGBO(255, 255, 255, 0.0),
+                            Color.fromRGBO(255, 255, 255, 0.3),
+                            Color.fromRGBO(255, 255, 255, 1.0),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: [0.0, 0.5,1.0])),
                 ),
               )
             ],
