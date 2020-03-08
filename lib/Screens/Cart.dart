@@ -4,6 +4,7 @@ import 'package:bmf_shopping/Widget/CustomizedAppBar.dart';
 import 'package:bmf_shopping/Widget/ShoppingCartTray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class _ChartState extends State<Cart> {
     CartProduct(cartProduct: sneakers[4], quantity: 1)
   ];
 
+  bool _deleteMode = true;
+
   @override
   Widget build(BuildContext context) {
     return new SafeArea(
@@ -33,13 +36,57 @@ class _ChartState extends State<Cart> {
               children: <Widget>[
                 new CustomizedAppBar(),
                 new SizedBox(height: ScreenUtil().setHeight(10.0)),
-                new ShoppingCartTray(),
+                new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(15.0),
+                      ),
+                      child: new Text("Shopping",
+                          style: new TextStyle(
+                              fontSize: ScreenUtil().setSp(50),
+                              fontWeight: FontWeight.w200)),
+                    ),
+                    new SizedBox(height: ScreenUtil().setHeight(9.0)),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: ScreenUtil().setWidth(15.0)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Text("Cart",
+                              style: new TextStyle(
+                                  fontSize: ScreenUtil().setSp(50),
+                                  fontWeight: FontWeight.w500)),
+                          new IconButton(
+                              icon: new Icon(
+                                _deleteMode ? Icons.delete_outline : Icons.save,
+                                color: _deleteMode
+                                    ? Colors.red.shade700
+                                    : Colors.green,
+                                size: 35.0,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  if (_deleteMode == false)
+                                    _deleteMode = true;
+                                  else
+                                    _deleteMode = false;
+                                });
+                              })
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 new SizedBox(
                   height: ScreenUtil().setHeight(20.0),
                 ),
                 new Expanded(
                   child: Container(
-                    child: new ListView.builder(
+                    child: list.length > 0 ? new ListView.builder(
                       itemCount: list.length,
                       itemBuilder: (context, index) {
                         return Container(
@@ -97,24 +144,67 @@ class _ChartState extends State<Cart> {
                                 ],
                               ),
                               new SizedBox(width: ScreenUtil().setWidth(30.0)),
-                              new Container(
-                                width: ScreenUtil().setWidth(80.0),
-                                height: ScreenUtil().setHeight(70.0),
-                                decoration: new BoxDecoration(
-                                  borderRadius: new BorderRadius.circular(10.0),
-                                  color: Colors.blueGrey.shade300,
-                                ),
-                                child: new Center(
-                                  child: new Text('x${list[index].quantity}',
-                                      style: new TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w700)),
+                              new GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (_deleteMode)
+                                      list[index].quantity++;
+                                    else{
+                                      if(list[index].quantity > 1⚽){
+                                        list[index].quantity--;
+                                      }else{
+                                        list.removeAt(index);
+                                        // Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Least Amount reached ! 😋",style: new TextStyle(color : Theme.of(context).primaryColor),),));
+                                      }
+                                    }
+                                      
+                                  });
+                                },
+                                child: new Container(
+                                  width: ScreenUtil().setWidth(80.0),
+                                  height: ScreenUtil().setHeight(70.0),
+                                  decoration: new BoxDecoration(
+                                      borderRadius:
+                                          new BorderRadius.circular(10.0),
+                                      color: _deleteMode == false
+                                          ? Colors.transparent
+                                          : Colors.blueGrey.shade300,
+                                      border: new Border.all(
+                                          color: _deleteMode == false
+                                              ? Colors.red
+                                              : Colors.transparent)),
+                                  child: new Center(
+                                    child: new Text('x${list[index].quantity}',
+                                        style: new TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w700)),
+                                  ),
                                 ),
                               )
                             ],
                           ),
                         );
                       },
+                    ) : new FittedBox(
+                      child: Column(
+                        children: <Widget>[
+                          new Text(
+                            "No Items",
+                            style: new TextStyle(
+                              color :Colors.black26,
+                              fontWeight: FontWeight.w700
+                            ),
+                          ),
+                          new Text(
+                            "Hosted on Github with 💚 by Abhishek" ,
+                            style: new TextStyle(
+                              fontSize: 2.0,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w600
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -137,11 +227,11 @@ class _ChartState extends State<Cart> {
                 new Text(
                   "items",
                 ),
-                new Text("\$650.0", style: new TextStyle(
-                  fontSize: ScreenUtil().setSp(50.0),
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700
-                )),
+                new Text("\$${_totalExpenses(list)}",
+                    style: new TextStyle(
+                        fontSize: ScreenUtil().setSp(50.0),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700)),
               ],
             ),
           ),
@@ -177,4 +267,13 @@ class _ChartState extends State<Cart> {
       ),
     ));
   }
+
+  String _totalExpenses(List<CartProduct> li) {
+    double sum = 0;
+    for (int i = 0; i < li.length; i++) {
+      sum = sum + li[i].cartProduct.price * li[i].quantity;
+    }
+    return sum.toString();
+  }
+  
 }
