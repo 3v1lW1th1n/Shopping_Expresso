@@ -150,11 +150,11 @@ class _ChartState extends State<Cart> {
                                     if (_deleteMode)
                                       list[index].quantity++;
                                     else{
-                                      if(list[index].quantity > 1⚽){
+                                      if(list[index].quantity > 1){
                                         list[index].quantity--;
                                       }else{
                                         list.removeAt(index);
-                                        // Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Least Amount reached ! 😋",style: new TextStyle(color : Theme.of(context).primaryColor),),));
+                                        Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Product removed",style: new TextStyle(color : Theme.of(context).primaryColor),),));
                                       }
                                     }
                                       

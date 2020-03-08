@@ -1,9 +1,10 @@
-import 'package:bmf_shopping/Models/CartProduct.dart';
 import 'package:bmf_shopping/Screens/Cart.dart';
 import 'package:bmf_shopping/Screens/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'Screens/History.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,7 +28,8 @@ class _HomePageState extends State<HomePage> {
       new Home(
         myFocusNode: myFocusNode,
       ),
-      new Cart()
+      new Cart(),
+      new History()
     ];
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -47,7 +49,7 @@ class _HomePageState extends State<HomePage> {
               icon: new Icon(FontAwesomeIcons.cartArrowDown),
               title: new SizedBox.shrink()),
           new BottomNavigationBarItem(
-              icon: new Icon(FontAwesomeIcons.heart),
+              icon: new Icon(FontAwesomeIcons.history),
               title: new SizedBox.shrink())
         ],
         onTap: (index) {
@@ -60,6 +62,9 @@ class _HomePageState extends State<HomePage> {
               _currentIndex = index - 1;
           });
         },
+      ),
+      drawer: new Drawer(
+        child  : new DrawerHeader(child: null)
       ),
     );
   }
