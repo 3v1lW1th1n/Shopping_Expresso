@@ -1,3 +1,4 @@
+import 'package:bmf_shopping/Screens/SplashScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'HomePage.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.deepOrange.shade50,
         primarySwatch: Colors.deepOrange,
       ),
-      home: HomePage()
+      home: SplashScreen()
     );
   }
 }

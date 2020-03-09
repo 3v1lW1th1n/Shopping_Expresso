@@ -240,7 +240,7 @@ class _ChartState extends State<Cart> {
                 left: ScreenUtil().setWidth(20.0),
                 right: ScreenUtil().setWidth(20.0)),
             child: new Container(
-              height: ScreenUtil().setHeight(75.0),
+              height: ScreenUtil().setHeight(65.0),
               margin: EdgeInsets.only(
                   top: ScreenUtil().setWidth(30.0),
                   bottom: ScreenUtil().setWidth(30.0)),
