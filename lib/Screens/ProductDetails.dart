@@ -3,6 +3,7 @@ import 'package:bmf_shopping/Models/Sneakers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 
 class ProductDetails extends StatefulWidget {
   Sneakers product;
@@ -401,18 +402,22 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () => _buildSnackBar(context),
+        onPressed: () => _addNewProduct(context , widget.product),
         child: new Icon(FontAwesomeIcons.cartPlus),
       ),
     );
   }
 
-  _buildSnackBar(BuildContext context) {
+  _addNewProduct(BuildContext context , Sneakers product) {
     final snkBar = new SnackBar(
         content: new Text(
       "Added to Cart !",
       style: new TextStyle(color: Colors.redAccent),
     ));
+    final newProduct = Sneakers(name: product.name , condition: product.condition , price: product.price ,imageURL: product.imageURL,avail: product.avail,liked: product.liked);
+    final cartBox = Hive.box('cartProducts');
+    cartBox.add(newProduct);
+    print("Length >> " + cartBox.length.toString());
     _scaffoldKey.currentState.showSnackBar(snkBar);
   }
 }

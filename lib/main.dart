@@ -12,6 +12,7 @@ void main() async{
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(SneakersAdapter());
   runApp(MyApp());
+  await Hive.openBox('cartProducts');
 }
 
 class MyApp extends StatefulWidget {
