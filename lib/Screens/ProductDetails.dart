@@ -409,14 +409,33 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   _addNewProduct(BuildContext context , Sneakers product) {
-    final snkBar = new SnackBar(
+    var snkBar ;
+    bool updated = false ;
+    final cartBox = Hive.box('cartProducts');
+    for(int i =0 ; i < cartBox.length ; ++i){
+      final prod = cartBox.getAt(i) as Sneakers ;
+      if(prod.name == product.name){ //Quantity should be updated .
+        updated = true ;
+        int quantity = prod.quantity ; quantity++ ;
+        cartBox.putAt(i, Sneakers(name: product.name , condition: product.condition , price: product.price ,imageURL: product.imageURL,avail: product.avail,liked: product.liked,quantity: quantity));
+        break ;
+      }
+    }
+    if(!updated){
+      final newProduct = Sneakers(name: product.name , condition: product.condition , price: product.price ,imageURL: product.imageURL,avail: product.avail,liked: product.liked,quantity: 1);
+      cartBox.add(newProduct);
+      snkBar = new SnackBar(
         content: new Text(
       "Added to Cart !",
       style: new TextStyle(color: Colors.redAccent),
-    ));
-    final newProduct = Sneakers(name: product.name , condition: product.condition , price: product.price ,imageURL: product.imageURL,avail: product.avail,liked: product.liked);
-    final cartBox = Hive.box('cartProducts');
-    cartBox.add(newProduct);
+      ));
+    }else{
+      snkBar = new SnackBar(
+        content: new Text(
+      "Qunatity Updated !",
+      style: new TextStyle(color: Colors.redAccent),
+      ));
+    }
     print("Length >> " + cartBox.length.toString());
     _scaffoldKey.currentState.showSnackBar(snkBar);
   }

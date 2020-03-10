@@ -89,17 +89,20 @@ class _ChartState extends State<Cart> {
                   future: Hive.openBox('cartProducts'),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError)
-                        return new Text(snapshot.hasError.toString());
-                      else {
+                      if (snapshot.hasError){
+                        return CircularProgressIndicator();
+                        // return new Text(snapshot.hasError.toString());
+                      }else {
                         final cart = Hive.box('cartProducts');
                         return new Expanded(
                           child: Container(
                             child: cart.length > 0
                                 ? new ListView.builder(
                                     itemCount: cart.length,
-                                    itemBuilder: (context, index) { 
-                                      final product = cart.getAt(index) as Sneakers ;
+                                    itemBuilder: (context, index) {
+                                      final product =
+                                          cart.getAt(index) as Sneakers;
+                                      print(product.quantity);
                                       return Container(
                                         margin: EdgeInsets.only(
                                             bottom: ScreenUtil().setWidth(10.0),
@@ -142,8 +145,7 @@ class _ChartState extends State<Cart> {
                                                         .setHeight(300),
                                                     fit: BoxFit.contain,
                                                     image: new AssetImage(
-                                                        product.imageURL
-                                                            ))
+                                                        product.imageURL))
                                               ],
                                             ),
                                             new Column(
@@ -153,9 +155,7 @@ class _ChartState extends State<Cart> {
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 new Text(
-                                                  product
-                                                      .name
-                                                      .toUpperCase(),
+                                                  product.name.toUpperCase(),
                                                   style: new TextStyle(
                                                       fontSize: ScreenUtil()
                                                           .setSp(30.0),
@@ -180,27 +180,60 @@ class _ChartState extends State<Cart> {
                                             new GestureDetector(
                                               onTap: () {
                                                 setState(() {
-                                                  if (_deleteMode)
-                                                    product.quantity++;
-                                                  else {
-                                                    if (product.quantity >
-                                                        1) {
-                                                      product.quantity--;
-                                                    } 
-                                                    // else {
-                                                    //   list.removeAt(index);
-                                                    //   Scaffold.of(context)
-                                                    //       .showSnackBar(
-                                                    //           new SnackBar(
-                                                    //     content: new Text(
-                                                    //       "Product removed",
-                                                    //       style: new TextStyle(
-                                                    //           color: Theme.of(
-                                                    //                   context)
-                                                    //               .primaryColor),
-                                                    //     ),
-                                                    //   ));
-                                                    // }
+                                                  if (_deleteMode) {
+                                                    // product.quantity++;
+                                                    int quan = product.quantity;
+                                                    quan++;
+                                                    cart.putAt(
+                                                        index,
+                                                        Sneakers(
+                                                            name: product.name,
+                                                            condition: product
+                                                                .condition,
+                                                            price:
+                                                                product.price,
+                                                            imageURL: product
+                                                                .imageURL,
+                                                            avail:
+                                                                product.avail,
+                                                            liked:
+                                                                product.liked,
+                                                            quantity: quan));
+                                                  } else {
+                                                    if (product.quantity > 1) {
+                                                      int quan =
+                                                          product.quantity;
+                                                      quan--;
+                                                      cart.putAt(
+                                                          index,
+                                                          Sneakers(
+                                                              name:
+                                                                  product.name,
+                                                              condition: product
+                                                                  .condition,
+                                                              price:
+                                                                  product.price,
+                                                              imageURL: product
+                                                                  .imageURL,
+                                                              avail:
+                                                                  product.avail,
+                                                              liked:
+                                                                  product.liked,
+                                                              quantity: quan));
+                                                    }else {
+                                                      cart.deleteAt(index);
+                                                      Scaffold.of(context)
+                                                          .showSnackBar(
+                                                              new SnackBar(
+                                                        content: new Text(
+                                                          "Product removed",
+                                                          style: new TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
+                                                        ),
+                                                      ));
+                                                    }
                                                   }
                                                 });
                                               },
