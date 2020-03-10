@@ -22,7 +22,8 @@ class _ChartState extends State<Cart> {
   ];
 
   bool _deleteMode = true;
-
+  String _cashToPay = "Love";
+  bool _dataReterived = false ;
   @override
   Widget build(BuildContext context) {
     return new SafeArea(
@@ -89,11 +90,14 @@ class _ChartState extends State<Cart> {
                   future: Hive.openBox('cartProducts'),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError){
+                      if (snapshot.hasError) {
                         return CircularProgressIndicator();
                         // return new Text(snapshot.hasError.toString());
-                      }else {
+                      } else {
                         final cart = Hive.box('cartProducts');
+
+                        _cashToPay = _totalExpenses(cart) ;
+                        _dataReterived = true ;
                         return new Expanded(
                           child: Container(
                             child: cart.length > 0
@@ -220,7 +224,7 @@ class _ChartState extends State<Cart> {
                                                               liked:
                                                                   product.liked,
                                                               quantity: quan));
-                                                    }else {
+                                                    } else {
                                                       cart.deleteAt(index);
                                                       Scaffold.of(context)
                                                           .showSnackBar(
@@ -318,11 +322,11 @@ class _ChartState extends State<Cart> {
                 new Text(
                   "items",
                 ),
-                // new Text("\$${_totalExpenses(list)}",
-                //     style: new TextStyle(
-                //         fontSize: ScreenUtil().setSp(50.0),
-                //         color: Colors.black,
-                //         fontWeight: FontWeight.w700)),
+                _dataReterived ? new Text("\$${_cashToPay}",
+                    style: new TextStyle(
+                        fontSize: ScreenUtil().setSp(50.0),
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700)) : new CircularProgressIndicator(),
               ],
             ),
           ),
@@ -359,10 +363,11 @@ class _ChartState extends State<Cart> {
     ));
   }
 
-  String _totalExpenses(List<CartProduct> li) {
+  String _totalExpenses(Box<dynamic> cart) {
     double sum = 0;
-    for (int i = 0; i < li.length; i++) {
-      sum = sum + li[i].cartProduct.price * li[i].quantity;
+    for (int i = 0; i < cart.length; i++) {
+      final product = cart.getAt(i) as Sneakers;
+      sum = sum + product.price * product.quantity;
     }
     return sum.toString();
   }
