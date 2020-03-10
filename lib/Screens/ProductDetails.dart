@@ -195,7 +195,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             }
                           });
                         },
-                        icon: widget.product.liked == true
+                        icon: widget.product.liked == 1
                             ? new Icon(
                                 FontAwesomeIcons.solidHeart,
                                 color: Colors.pink,

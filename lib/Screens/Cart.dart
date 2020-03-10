@@ -5,6 +5,7 @@ import 'package:bmf_shopping/Widget/ShoppingCartTray.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 
 class Cart extends StatefulWidget {
   @override
@@ -84,130 +85,187 @@ class _ChartState extends State<Cart> {
                 new SizedBox(
                   height: ScreenUtil().setHeight(20.0),
                 ),
-                new Expanded(
-                  child: Container(
-                    child: list.length > 0 ? new ListView.builder(
-                      itemCount: list.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.only(
-                              bottom: ScreenUtil().setWidth(10.0),
-                              left: ScreenUtil().setWidth(10.0),
-                              right: ScreenUtil().setWidth(10.0)),
-                          height: new ScreenUtil().setHeight(175.0),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              new Stack(
-                                children: <Widget>[
-                                  new Container(
-                                    width: ScreenUtil().setWidth(240.0),
+                new FutureBuilder(
+                  future: Hive.openBox('cartProducts'),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasError)
+                        return new Text(snapshot.hasError.toString());
+                      else {
+                        final cart = Hive.box('cartProducts');
+                        return new Expanded(
+                          child: Container(
+                            child: cart.length > 0
+                                ? new ListView.builder(
+                                    itemCount: cart.length,
+                                    itemBuilder: (context, index) { 
+                                      final product = cart.getAt(index) as Sneakers ;
+                                      return Container(
+                                        margin: EdgeInsets.only(
+                                            bottom: ScreenUtil().setWidth(10.0),
+                                            left: ScreenUtil().setWidth(10.0),
+                                            right: ScreenUtil().setWidth(10.0)),
+                                        height:
+                                            new ScreenUtil().setHeight(175.0),
+                                        child: new Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            new Stack(
+                                              children: <Widget>[
+                                                new Container(
+                                                  width: ScreenUtil()
+                                                      .setWidth(240.0),
+                                                ),
+                                                new Positioned(
+                                                  top: ScreenUtil()
+                                                      .setHeight(15.0),
+                                                  left: ScreenUtil()
+                                                      .setWidth(15.0),
+                                                  child: new Container(
+                                                      width: ScreenUtil()
+                                                          .setWidth(195),
+                                                      height: ScreenUtil()
+                                                          .setHeight(150),
+                                                      decoration: new BoxDecoration(
+                                                          color: Colors
+                                                              .blueGrey.shade50,
+                                                          borderRadius:
+                                                              new BorderRadius
+                                                                      .circular(
+                                                                  20.0))),
+                                                ),
+                                                new Image(
+                                                    width: ScreenUtil()
+                                                        .setWidth(300),
+                                                    height: ScreenUtil()
+                                                        .setHeight(300),
+                                                    fit: BoxFit.contain,
+                                                    image: new AssetImage(
+                                                        product.imageURL
+                                                            ))
+                                              ],
+                                            ),
+                                            new Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                new Text(
+                                                  product
+                                                      .name
+                                                      .toUpperCase(),
+                                                  style: new TextStyle(
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(30.0),
+                                                      fontWeight:
+                                                          FontWeight.w700),
+                                                ),
+                                                new Text(
+                                                  '\$${product.price}',
+                                                  style: new TextStyle(
+                                                      fontSize: ScreenUtil()
+                                                          .setSp(40.0),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                ),
+                                              ],
+                                            ),
+                                            new SizedBox(
+                                                width: ScreenUtil()
+                                                    .setWidth(30.0)),
+                                            new GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (_deleteMode)
+                                                    product.quantity++;
+                                                  else {
+                                                    if (product.quantity >
+                                                        1) {
+                                                      product.quantity--;
+                                                    } 
+                                                    // else {
+                                                    //   list.removeAt(index);
+                                                    //   Scaffold.of(context)
+                                                    //       .showSnackBar(
+                                                    //           new SnackBar(
+                                                    //     content: new Text(
+                                                    //       "Product removed",
+                                                    //       style: new TextStyle(
+                                                    //           color: Theme.of(
+                                                    //                   context)
+                                                    //               .primaryColor),
+                                                    //     ),
+                                                    //   ));
+                                                    // }
+                                                  }
+                                                });
+                                              },
+                                              child: new Container(
+                                                width:
+                                                    ScreenUtil().setWidth(80.0),
+                                                height: ScreenUtil()
+                                                    .setHeight(70.0),
+                                                decoration: new BoxDecoration(
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(10.0),
+                                                    color: _deleteMode == false
+                                                        ? Colors.transparent
+                                                        : Colors
+                                                            .blueGrey.shade300,
+                                                    border: new Border.all(
+                                                        color: _deleteMode ==
+                                                                false
+                                                            ? Colors.red
+                                                            : Colors
+                                                                .transparent)),
+                                                child: new Center(
+                                                  child: new Text(
+                                                      'x${product.quantity}',
+                                                      style: new TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w700)),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : new FittedBox(
+                                    child: Column(
+                                      children: <Widget>[
+                                        new Text(
+                                          "No Items",
+                                          style: new TextStyle(
+                                              color: Colors.black26,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        new Text(
+                                          "Hosted on Github with 💚 by Abhishek",
+                                          style: new TextStyle(
+                                              fontSize: 2.0,
+                                              color: Colors.black87,
+                                              fontWeight: FontWeight.w600),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  new Positioned(
-                                    top: ScreenUtil().setHeight(15.0),
-                                    left: ScreenUtil().setWidth(15.0),
-                                    child: new Container(
-                                        width: ScreenUtil().setWidth(195),
-                                        height: ScreenUtil().setHeight(150),
-                                        decoration: new BoxDecoration(
-                                            color: Colors.blueGrey.shade50,
-                                            borderRadius:
-                                                new BorderRadius.circular(
-                                                    20.0))),
-                                  ),
-                                  new Image(
-                                      width: ScreenUtil().setWidth(300),
-                                      height: ScreenUtil().setHeight(300),
-                                      fit: BoxFit.contain,
-                                      image: new AssetImage(
-                                          list[index].cartProduct.imageURL))
-                                ],
-                              ),
-                              new Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    list[index].cartProduct.name.toUpperCase(),
-                                    style: new TextStyle(
-                                        fontSize: ScreenUtil().setSp(30.0),
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  new Text(
-                                    '\$${list[index].cartProduct.price}',
-                                    style: new TextStyle(
-                                        fontSize: ScreenUtil().setSp(40.0),
-                                        fontWeight: FontWeight.w500,
-                                        color: Theme.of(context).primaryColor),
-                                  ),
-                                ],
-                              ),
-                              new SizedBox(width: ScreenUtil().setWidth(30.0)),
-                              new GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (_deleteMode)
-                                      list[index].quantity++;
-                                    else{
-                                      if(list[index].quantity > 1){
-                                        list[index].quantity--;
-                                      }else{
-                                        list.removeAt(index);
-                                        Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Product removed",style: new TextStyle(color : Theme.of(context).primaryColor),),));
-                                      }
-                                    }
-                                      
-                                  });
-                                },
-                                child: new Container(
-                                  width: ScreenUtil().setWidth(80.0),
-                                  height: ScreenUtil().setHeight(70.0),
-                                  decoration: new BoxDecoration(
-                                      borderRadius:
-                                          new BorderRadius.circular(10.0),
-                                      color: _deleteMode == false
-                                          ? Colors.transparent
-                                          : Colors.blueGrey.shade300,
-                                      border: new Border.all(
-                                          color: _deleteMode == false
-                                              ? Colors.red
-                                              : Colors.transparent)),
-                                  child: new Center(
-                                    child: new Text('x${list[index].quantity}',
-                                        style: new TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700)),
-                                  ),
-                                ),
-                              )
-                            ],
                           ),
                         );
-                      },
-                    ) : new FittedBox(
-                      child: Column(
-                        children: <Widget>[
-                          new Text(
-                            "No Items",
-                            style: new TextStyle(
-                              color :Colors.black26,
-                              fontWeight: FontWeight.w700
-                            ),
-                          ),
-                          new Text(
-                            "Hosted on Github with 💚 by Abhishek" ,
-                            style: new TextStyle(
-                              fontSize: 2.0,
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w600
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
+                      }
+                    } else {
+                      return new Expanded(
+                          child: new CircularProgressIndicator());
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -227,11 +285,11 @@ class _ChartState extends State<Cart> {
                 new Text(
                   "items",
                 ),
-                new Text("\$${_totalExpenses(list)}",
-                    style: new TextStyle(
-                        fontSize: ScreenUtil().setSp(50.0),
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700)),
+                // new Text("\$${_totalExpenses(list)}",
+                //     style: new TextStyle(
+                //         fontSize: ScreenUtil().setSp(50.0),
+                //         color: Colors.black,
+                //         fontWeight: FontWeight.w700)),
               ],
             ),
           ),
@@ -275,5 +333,4 @@ class _ChartState extends State<Cart> {
     }
     return sum.toString();
   }
-  
 }

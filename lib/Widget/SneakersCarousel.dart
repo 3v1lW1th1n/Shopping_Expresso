@@ -50,7 +50,7 @@ class _SneakersCarouselState extends State<SneakersCarousel> {
                           overflow: TextOverflow.ellipsis,
                           style: new TextStyle(
                               fontSize: ScreenUtil().setSp(20.0),
-                              color: sneakers[index].avail == true
+                              color: sneakers[index].avail == 1
                                   ? Colors.green
                                   : Colors.red.shade700,
                               fontWeight: FontWeight.w800),

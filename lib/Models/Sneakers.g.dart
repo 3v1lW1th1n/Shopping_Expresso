@@ -23,13 +23,14 @@ class SneakersAdapter extends TypeAdapter<Sneakers> {
       imageURL: fields[3] as String,
       avail: fields[4] as int,
       liked: fields[5] as int,
+      quantity: fields[6] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Sneakers obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -41,6 +42,8 @@ class SneakersAdapter extends TypeAdapter<Sneakers> {
       ..writeByte(4)
       ..write(obj.avail)
       ..writeByte(5)
-      ..write(obj.liked);
+      ..write(obj.liked)
+      ..writeByte(6)
+      ..write(obj.quantity);
   }
 }
