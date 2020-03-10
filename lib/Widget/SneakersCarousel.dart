@@ -108,13 +108,13 @@ class _SneakersCarouselState extends State<SneakersCarousel> {
                     child: new IconButton(
                         onPressed: () {
                           setState(() {
-                            if (sneakers[index].liked == false)
-                              sneakers[index].liked = true;
+                            if (sneakers[index].liked == 0)
+                              sneakers[index].liked = 1;
                             else
-                              sneakers[index].liked = false;
+                              sneakers[index].liked = 0;
                           });
                         },
-                        icon: sneakers[index].liked == false
+                        icon: sneakers[index].liked == 0
                             ? new Icon(
                                 FontAwesomeIcons.heart,
                               )

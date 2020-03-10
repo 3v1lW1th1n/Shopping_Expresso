@@ -187,7 +187,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       child: new IconButton(
                         onPressed: () {
                           setState(() {
-                            widget.product.liked = !widget.product.liked;
+                            if (widget.product.liked == 0) {
+                              widget.product.liked = 1;
+                            } else {
+                              widget.product.liked = 0;
+                            }
                           });
                         },
                         icon: widget.product.liked == true
@@ -389,7 +393,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          stops: [0.0, 0.5,1.0])),
+                          stops: [0.0, 0.5, 1.0])),
                 ),
               )
             ],
