@@ -15,6 +15,11 @@ Building this app with intention of learning flutter better .
 :-------------------------:|:-------------------------:
 ![](https://github.com/iamabhishek229313/Shopping_Expresso/blob/master/Screenshots/About.jpg?raw=true)|![](https://github.com/iamabhishek229313/Shopping_Expresso/blob/master/Screenshots/Drawer.jpg?raw=true)
 
+## Techanical Things
+```
+Hive Database . (NoSQL)
+Flutter SDK 
+```
 
 ## Pull Request 
 I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request.
