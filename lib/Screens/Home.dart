@@ -5,12 +5,14 @@ import 'package:bmf_shopping/Widget/ExploreTray.dart';
 import 'package:bmf_shopping/Widget/OurProductsTray.dart';
 import 'package:bmf_shopping/Widget/SearchProducts.dart';
 import 'package:bmf_shopping/Widget/SneakersCarousel.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Home extends StatefulWidget {
   FocusNode myFocusNode ;
-  Home({@required this.myFocusNode});
+  GlobalKey<ScaffoldState> scaffoldKey ;
+  Home({@required this.myFocusNode,@required this.scaffoldKey});
   @override
   _HomeState createState() => _HomeState();
 }
@@ -24,7 +26,7 @@ class _HomeState extends State<Home> {
         child: new ListView(
           shrinkWrap: true,
           children: <Widget>[
-            CustomizedAppBar(),
+            CustomizedAppBar(scaffoldKey: widget.scaffoldKey,),
             new SizedBox(height: ScreenUtil().setHeight(10.0)),
             OurProductsTray(),
             new SizedBox(height: ScreenUtil().setHeight(30.0)),

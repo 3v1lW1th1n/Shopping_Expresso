@@ -8,6 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 
 class Cart extends StatefulWidget {
+  GlobalKey<ScaffoldState> scaffoldKey ;
+  Cart({@required this.scaffoldKey});
   @override
   _ChartState createState() => _ChartState();
 }
@@ -30,7 +32,7 @@ class _ChartState extends State<Cart> {
       padding: EdgeInsets.all(ScreenUtil().setWidth(15)),
       child: Column(
         children: <Widget>[
-          new CustomizedAppBar(),
+          new CustomizedAppBar(scaffoldKey: widget.scaffoldKey,),
           new SizedBox(height: ScreenUtil().setHeight(10.0)),
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,7 +374,9 @@ class _ChartState extends State<Cart> {
                   );
                 }
               } else {
-                return CircularProgressIndicator();
+                return new Center(
+                  child: new CircularProgressIndicator(),
+                );
               }
             },
           ),

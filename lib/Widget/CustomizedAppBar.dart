@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomizedAppBar extends StatefulWidget {
+  GlobalKey<ScaffoldState> scaffoldKey ;
+  CustomizedAppBar({@required this.scaffoldKey});
   @override
   _CustomizedAppBarState createState() => _CustomizedAppBarState();
 }
@@ -30,7 +32,9 @@ class _CustomizedAppBarState extends State<CustomizedAppBar> {
                     blurRadius: 5.0)
               ]),
           child: new IconButton(
-            onPressed: () {},
+            onPressed: () {
+              widget.scaffoldKey.currentState.openDrawer();
+            },
             icon: new Icon(Icons.menu),
           ),
         ),
