@@ -1,10 +1,10 @@
 import 'package:bmf_shopping/Screens/Cart.dart';
 import 'package:bmf_shopping/Screens/Home.dart';
+import 'package:bmf_shopping/Screens/UserInformation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'Screens/History.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       new Cart(
         scaffoldKey: _scaffoldKey,
       ),
-      new History()
+      new UserInforamtion()
     ];
     return Scaffold(
       key: _scaffoldKey,
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               icon: new Icon(FontAwesomeIcons.cartArrowDown),
               title: new SizedBox.shrink()),
           new BottomNavigationBarItem(
-              icon: new Icon(FontAwesomeIcons.history),
+              icon: new Icon(FontAwesomeIcons.user),
               title: new SizedBox.shrink())
         ],
         onTap: (index) {
@@ -188,7 +188,6 @@ class _HomePageState extends State<HomePage> {
                 _currentDrawer = 6;
               });
               Navigator.pop(context);
-
               final snkBar = new SnackBar(
                   content: new Text(
                 "Hey Dev ! You can add this feature 😄",
@@ -196,7 +195,20 @@ class _HomePageState extends State<HomePage> {
               ));
               _scaffoldKey.currentState.showSnackBar(snkBar);
             },
-          )
+          ),
+          new Divider(),
+          new ListTile(
+            title: new Text("Credits"),
+            trailing: new Icon(Icons.credit_card),
+            selected: _currentDrawer == 7,
+            onTap: () {
+              setState(() {
+                _currentDrawer = 7;
+                _currentIndex = 2;
+              });
+              Navigator.pop(context);
+            },
+          ),
         ],
       )),
     );
